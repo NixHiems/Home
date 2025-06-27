@@ -3,8 +3,12 @@
     <head>
         <!-- these are padding for  -->
         <style>
+            .pink {
+                border: 1px solid deeppink;
+                border-radius: 5px;
+            }
             body {
-                background-image: url("assets/2560x1600.jpg");
+                background-image: url("2560x1600.jpg");
                 background-size:cover;
                 background-position: center;
                 margin: 0;
@@ -12,35 +16,74 @@
                 height: 100vh;
                 display: flex;
                 flex-direction: column;
+                min-width: 407px;
             }
             header {
                 flex: 0 0 auto;
                 margin: 5px;
                 display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
+                gap: 5px;
             }
             h1 {
-                margin: 5px;
+                margin: 5px 0px;
+                width: 100%;
             }
-            #topInput {
+            input {
+                padding: 0px 4px 1px 4px;
+                border-width: 2px;
+                border-radius: 5px;
+            }
+            #mainHeader {
+                flex: 1 1;
+            }
+            .level1 {
                 display: flex;
                 flex-wrap: wrap;
+                gap: 5px;
             }
-            .topInputSection {
-                padding: 5px;
+            .level2 {
+                flex: 1 1 auto;
+                display: flex;
+                gap: 5px;
+                flex-wrap: wrap;
             }
-            #topEdit {
-                display: none;
-                margin: 5px;
+            .level2 * {
+                flex: 1 1 auto;
             }
             #editURL {
-                width: calc(100% - 8px);
+                display: none;
+                flex: 1 1 100%;
             }
-            iframe {
+            #besideHeader {
+                flex: 0 1 auto;
+                display: flex;
+                gap: 5px;
+            }
+            #besideHeaderContent {
+                display: none;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 5px;
+            }
+            .counter {
                 flex: 1 1 auto;
-                min-width: 325px;
-                margin: 5px
+                background-color: #FFFFFF88;
+                border-radius: 5px;
+                padding: 5px;
+                display: flex;
+                flex-direction: column;
+            }
+            #counterTitle1,#counterTitle2,#counterTitle3 {
+                line-height: 1.1;
+            }
+            #counterDay1,#counterDay2,#counterDay3 {
+                font-size: 1.5em;
+                margin: 0px;
+                text-align: right;
+                line-height: 1.1;
+            }
+            .counterHHMM {
+                font-size: 0.75em;
             }
             section {
                 flex-grow: 1; /* Allow the content section to expand to fill remaining space */
@@ -49,44 +92,56 @@
             }
             .listItem {
                 padding: 10px;
-                margin: 5px;
+                margin: 5px 0px;
                 background-color: #FFFFFF88;
                 border-radius: 5px;
                 display: flex;
-                gap: 5px; /* Spacing between elements */
-            }
-            .listCheckbox {
-                flex: 0 0 auto;
+                gap: 0px 5px; /* Spacing between elements */
+                flex-wrap: wrap;
+                align-items: baseline;
             }
             .listText {
-                flex: 1 1 auto; /* 1 1 fills the available space */
+                flex: 1 1; /* 1 1 fills the available space */
             }
             .actualText {
                 padding: 5px;
                 word-break: break-word;
+                font: 1em "Liberation Serif", serif;
             }
             .listDate {
                 flex: 0 0 auto;
                 text-align: right;
             }
-            .listTrash {
+            .sublistItem {
+                padding: 10px;
+                margin: 4px 24px 4px 15px;
+                width: 100%;
+                background-color: #FFFFFF88;
+                border-radius: 5px;
+                display: flex;
+                gap: 5px; /* Spacing between elements */
+                align-items: baseline;
+            }
+            iframe {
                 flex: 0 0 auto;
-                margin-left: auto; /* Pushes this to the far right */
+                min-width: 325px;
+                margin: 5px
             }
         </style>
+        <title>To Do: WIN!</title>
     </head>
     <body>
         <!-- title at the top is editable because of the "span contenteditable" -->
         <header>
-            <div>
+            <div id="mainHeader">
                 <h1><span contenteditable>To Do: WIN!</span></h1>
                 <!-- textbox for adding items to list  -->
-                <div id="topInput">
-                    <div class="topInputSection">
-                        <input type="text" id="listInput" class="listenEnter" autofocus>
-                        <input type="datetime-local" id="listDate" class="listenEnter">
+                <div class="level1">
+                    <div class="level2">
+                        <input type="text" id="listInput" autofocus>
+                        <input type="datetime-local" id="listDate">
                     </div>
-                    <div class="topInputSection">
+                    <div class="level2">
                         <!-- creating button for adding an item to the list  -->
                         <input type="button" id="addItem" value="➕ Add Item" onclick="addItemToList()">
                         <!-- remove all button to be there event listener is onclick  -->
@@ -94,15 +149,34 @@
                         <input type="button" id="saveAll" value="💾 Save All" onclick="refreshLocalStorage()">
                         <input type="button" id="openEditor" value="🎶 Edit" onclick="openEditor()">
                     </div>
-                </div>
-                <div id="topEdit">
                     <input type="text" id="editURL" placeholder="Copy/paste the embed URL after 'src=' in the source, then click edit." onfocusout="editURL()">
                 </div>
+
             </div>
-            <iframe id="player" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWUZMtnnlvJ9p?utm_source=generator" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <div id="besideHeader">
+                <input type="button" class="pink" value="<" onclick="openBesideHeader()">
+                <div id="besideHeaderContent">
+                    <div class="counter pink">
+                        <div contenteditable id="counterTitle1" onfocusout="editCounter(1)">Days since</div>
+                        <input type="date" id="counterDate1" onchange="editCounter(1)">
+                        <p id="counterDay1">0 <span class="counterHHMM">00:00</span></p>
+                    </div>
+                    <div class="counter pink">
+                        <div contenteditable id="counterTitle2" onfocusout="editCounter(2)">Days since</div>
+                        <input type="date" id="counterDate2" onchange="editCounter(2)">
+                        <p id="counterDay2">0 <span class="counterHHMM">00:00</span></p>
+                    </div>
+                    <div class="counter pink">
+                        <div contenteditable id="counterTitle3" onfocusout="editCounter(3)">Days since</div>
+                        <input type="date" id="counterDate3" onchange="editCounter(3)">
+                        <p id="counterDay3">0 <span class="counterHHMM">00:00</span></p>
+                    </div>
+                </div>
+            </div>
         </header>
         <!-- section for list items so that it is easier to handle  -->
         <section id="listArea"></section>
-        <script src="scripts/ToDoList.js"></script>
+        <iframe id="player" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWUZMtnnlvJ9p?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <script src="script.js"></script>
     </body>
 </html>
