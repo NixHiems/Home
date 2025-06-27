@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-US">
+    <head>
+        <!-- these are padding for  -->
+        <style>
+            body {
+                background-image: url("assets/2560x1600.jpg");
+                background-size:cover;
+                background-position: center;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            header {
+                flex: 0 0 auto;
+                margin: 5px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            h1 {
+                margin: 5px;
+            }
+            #topInput {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .topInputSection {
+                padding: 5px;
+            }
+            #topEdit {
+                display: none;
+                margin: 5px;
+            }
+            #editURL {
+                width: calc(100% - 8px);
+            }
+            iframe {
+                flex: 1 1 auto;
+                min-width: 325px;
+                margin: 5px
+            }
+            section {
+                flex-grow: 1; /* Allow the content section to expand to fill remaining space */
+                overflow-y: auto;
+                margin: 5px;
+            }
+            .listItem {
+                padding: 10px;
+                margin: 5px;
+                background-color: #FFFFFF88;
+                border-radius: 5px;
+                display: flex;
+                gap: 5px; /* Spacing between elements */
+            }
+            .listCheckbox {
+                flex: 0 0 auto;
+            }
+            .listText {
+                flex: 1 1 auto; /* 1 1 fills the available space */
+            }
+            .actualText {
+                padding: 5px;
+                word-break: break-word;
+            }
+            .listDate {
+                flex: 0 0 auto;
+                text-align: right;
+            }
+            .listTrash {
+                flex: 0 0 auto;
+                margin-left: auto; /* Pushes this to the far right */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- title at the top is editable because of the "span contenteditable" -->
+        <header>
+            <div>
+                <h1><span contenteditable>To Do: WIN!</span></h1>
+                <!-- textbox for adding items to list  -->
+                <div id="topInput">
+                    <div class="topInputSection">
+                        <input type="text" id="listInput" class="listenEnter" autofocus>
+                        <input type="datetime-local" id="listDate" class="listenEnter">
+                    </div>
+                    <div class="topInputSection">
+                        <!-- creating button for adding an item to the list  -->
+                        <input type="button" id="addItem" value="➕ Add Item" onclick="addItemToList()">
+                        <!-- remove all button to be there event listener is onclick  -->
+                        <input type="button" id="removeAll" value="🗑️ Remove All" onclick="itemRemoveAll()">
+                        <input type="button" id="saveAll" value="💾 Save All" onclick="refreshLocalStorage()">
+                        <input type="button" id="openEditor" value="🎶 Edit" onclick="openEditor()">
+                    </div>
+                </div>
+                <div id="topEdit">
+                    <input type="text" id="editURL" placeholder="Copy/paste the embed URL after 'src=' in the source, then click edit." onfocusout="editURL()">
+                </div>
+            </div>
+            <iframe id="player" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWUZMtnnlvJ9p?utm_source=generator" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </header>
+        <!-- section for list items so that it is easier to handle  -->
+        <section id="listArea"></section>
+        <script src="scripts/ToDoList.js"></script>
+    </body>
+</html>
