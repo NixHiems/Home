@@ -231,7 +231,7 @@ function checkAll() {
                     item.classList.add("overdue");
                     refreshLocalStorage();
                     notifyUser("Oh no!", `You set '${itemTitle}' to be due ${itemDate}. Please finish it!`,"https://em-content.zobj.net/source/skype/289/face-screaming-in-fear_1f631.png");
-                    setTimeout(() => recheck(item),1000);
+                    setTimeout(() => recheck(item),600000);
                 }
             }
         });
@@ -246,7 +246,7 @@ function checkAll() {
             if (!checkbox.checked && !item.classList.contains("done")) {
                 item.classList.add("overdue");
                 notifyUser("Oh no!", `You set "${itemTitle}" to be due ${itemDate}. Please finish it!`,"https://em-content.zobj.net/source/skype/289/face-screaming-in-fear_1f631.png");
-                setTimeout(() => recheck(item), 1000);
+                setTimeout(() => recheck(item), 600000);
             } else {
                 notifyUser("Good work!", `You took care of "${itemTitle}" after the reminder. Keep it up!`,"https://em-content.zobj.net/source/skype/289/thumbs-up_1f44d.png");
             }
