@@ -152,19 +152,18 @@ function editCounter(counterId) {
 
 //adds stylistic elements when checkbox is clicked
 //returns to former style when unchecked
-function toggleColor(clickedElement,bgColor, txtColor){
+function toggleColor(clickedElement,bgColor=0,txtColor=0){
     var twoUp = clickedElement.parentElement.parentElement
     if (clickedElement.checked) {
-        twoUp.style.color = txtColor
-        twoUp.style.backgroundColor = bgColor
+        twoUp.classList.add("done")
+        twoUp.classList.remove("overdue")
         clickedElement.setAttribute('checked', true)
         const now = new Date()
         if (getInfo(twoUp).parsedDate > now) {
             notifyUser("Great work!", `You took care of "${getInfo(twoUp).title}" before it was due! Keep it up!`,"https://em-content.zobj.net/source/skype/289/partying-face_1f973.png");
         }
     } else {
-        twoUp.style.color = "black"
-        twoUp.style.backgroundColor = "#FFF8"
+        twoUp.classList.remove("done")
         clickedElement.removeAttribute('checked')
     }
     refreshLocalStorage()
@@ -174,7 +173,7 @@ function subitemAdder(clickedElement) {
     var string = `
     <div class="sublistItem">
     <div class="listCheckbox">
-    <input type="checkbox" onclick="toggleColor(this,'#0000','#0008')">
+    <input type="checkbox" onclick="toggleColor(this)">
     </div>
     <div class="listText">
     <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()"></div>
@@ -219,11 +218,6 @@ function notifyUser(title, message, icon) {
     }
 }
 function checkAll() {
-    function toggleColor(element, color1, color2) {
-        element.style.backgroundColor = color1;
-        element.style.color = color2;
-        refreshLocalStorage();
-    }
     function checkDates() {
         document.querySelectorAll(".listItem").forEach(item => {
             itemTitle = getInfo(item).title
@@ -233,10 +227,11 @@ function checkAll() {
             if (parsedDate < now) {
                 const checkbox = item.querySelector(".listCheckbox input");
                 // Only proceed if the checkbox is unchecked AND item isn't already red
-                if (!checkbox.checked && item.style.color !== "white") {
-                    toggleColor(item, "#F00", "white");
+                if (!checkbox.checked && !item.classList.contains("overdue")) {
+                    item.classList.add("overdue");
+                    refreshLocalStorage();
                     notifyUser("Oh no!", `You set '${itemTitle}' to be due ${itemDate}. Please finish it!`,"https://em-content.zobj.net/source/skype/289/face-screaming-in-fear_1f631.png");
-                    setTimeout(() => recheck(item),600000);
+                    setTimeout(() => recheck(item),1000);
                 }
             }
         });
@@ -248,10 +243,10 @@ function checkAll() {
             itemDate = getInfo(item).date
             checkbox = item.querySelector(".listCheckbox input");
             // Only proceed if the checkbox is unchecked AND item isn't yet green
-            if (!checkbox.checked && item.style.color !== "green") {
-                toggleColor(item, "#F00", "white");
+            if (!checkbox.checked && !item.classList.contains("done")) {
+                item.classList.add("overdue");
                 notifyUser("Oh no!", `You set "${itemTitle}" to be due ${itemDate}. Please finish it!`,"https://em-content.zobj.net/source/skype/289/face-screaming-in-fear_1f631.png");
-                setTimeout(() => recheck(item), 600000);
+                setTimeout(() => recheck(item), 1000);
             } else {
                 notifyUser("Good work!", `You took care of "${itemTitle}" after the reminder. Keep it up!`,"https://em-content.zobj.net/source/skype/289/thumbs-up_1f44d.png");
             }
