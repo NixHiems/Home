@@ -99,6 +99,18 @@
                 gap: 0px 5px; /* Spacing between elements */
                 flex-wrap: wrap;
                 align-items: baseline;
+                transition: all 0.3s ease;
+            }
+            .listToggle {
+                transition: all 0.3s ease;
+                width:max-content;
+            }
+            .listItem:not(:has(.sublistItem)) .listToggle{
+                opacity: 0.2;
+                z-index: -1;
+            }
+            .listItem.closed .listToggle{
+                transform: rotate(90deg);
             }
             .listText {
                 flex: 1 1; /* 1 1 fills the available space */
@@ -114,13 +126,21 @@
             }
             .sublistItem {
                 padding: 10px;
-                margin: 4px 24px 4px 15px;
+                margin: 4px 24px 4px 18px;
                 width: 100%;
                 background-color: #FFFFFF88;
                 border-radius: 5px;
                 display: flex;
                 gap: 5px; /* Spacing between elements */
                 align-items: baseline;
+                transition: all 0.3s ease;
+            }
+            .listItem.closed .sublistItem {
+                opacity: 0;
+                height: 0px;
+                margin: 0px 24px 0px 18px;
+                padding: 0px 10px;
+                z-index: -1;
             }
             iframe {
                 flex: 0 0 auto;

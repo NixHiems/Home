@@ -31,6 +31,9 @@ function addItemToList() {
         <div class="listText">
         <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()">${list_item}</div>
         </div>
+        <div class="listToggle">
+        <input type="button" value="▼" onclick="toggleClosed(this)">
+        </div>
         <div class="listDate">
         <div class="actualText"><strong>${list_date}</strong></div>
         </div>
@@ -149,9 +152,14 @@ function editCounter(counterId) {
     };
     localStorage.setItem(`counter${counterId}`, JSON.stringify(counterData));
 }
-
-//adds stylistic elements when checkbox is clicked
-//returns to former style when unchecked
+function toggleClosed(clickedElement){
+    var twoUp = clickedElement.parentElement.parentElement
+    if (!twoUp.classList.contains("closed")) {
+        twoUp.classList.add("closed")
+    } else {
+        twoUp.classList.remove("closed")
+    }
+}
 function toggleColor(clickedElement,bgColor=0,txtColor=0){
     var twoUp = clickedElement.parentElement.parentElement
     if (clickedElement.checked) {
@@ -183,6 +191,7 @@ function subitemAdder(clickedElement) {
     </div>
     </div>`;
     twoUp.innerHTML += string;
+    twoUp.classList.remove("closed");
     var newSubitem = twoUp.querySelector(".sublistItem:last-child .actualText");
     newSubitem.focus();
     refreshLocalStorage();
