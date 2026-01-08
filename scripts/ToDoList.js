@@ -191,10 +191,9 @@ function toggleColor(clickedElement,bgColor=0,txtColor=0){
                 });
                 string = twoUp.outerHTML;
                 string = string.replace(/ done/g,"").replace(/ checked="true"/g,"").replace(/<strong>.*?<\/strong>/, `<strong>${list_date}</strong>`);
-                console.log(string);
                 insertItem(list_date_raw,string);
             }
-            setTimeout(() => autoDelete(twoUp),8640);
+            setTimeout(() => autoDelete(twoUp),86400000);
         }
     } else {
         twoUp.classList.remove("done")
