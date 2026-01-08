@@ -6,7 +6,7 @@ function addItemToList() {
     var list_date_raw = document.getElementById("listDate").value
     const date = new Date(list_date_raw);
     const list_date = date.toLocaleString('en-US',{
-        weekday: 'short',   // Includes the abbreviated day of the week (e.g., Sun, Mon)
+    weekday: 'short',   // Includes the abbreviated day of the week (e.g., Sun, Mon)
     year: '2-digit',    // Ensures a two-digit year
     month: '2-digit',   // Ensures a two-digit month
     day: '2-digit',     // Ensures a two-digit day
@@ -20,63 +20,71 @@ function addItemToList() {
     presetDateTime()
     //if the user did not submit an empty string do the following:
     if (list_item != '') {
-        //create variable listArea which holds a value of a place in the document
-        var listArea = document.getElementById("listArea")
         //define list item as having a checkbox that can be toggled on the left with the item and a removal button toggleGreen and itemDeleter both take this as an argument so that the functions know which element is calling it and so that we can get the parent element div to manipulate
         var string = `
         <div class="listItem">
         <div class="listCheckbox">
-        <input type="checkbox" onclick="toggleColor(this,'#0F88','green')">
+        <input type="checkbox" onclick="toggleColor(this,'#0F88','green')" title="Mark this item as complete">
         </div>
         <div class="listText">
-        <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()">${list_item}</div>
+        <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()" title="Click to edit list item">${list_item}</div>
         </div>
         <div class="listToggle">
-        <input type="button" value="▼" onclick="toggleClosed(this)">
+        <input type="button" value="▼" onclick="toggleClosed(this)" title="Open/Close the sub-list">
         </div>
         <div class="listDate">
         <div class="actualText"><strong>${list_date}</strong></div>
         </div>
+        <div class="listRepeat">
+        <label class="switch">
+        <input type="checkbox" onclick="toggleAttribute('checked')">
+        <span class="slider" title="Click to repeat when complete"></span>
+        </label>
+        </div>
         <div class="listAddSubitem">
-        <input type="button" value="➕" onclick="subitemAdder(this)">
+        <input type="button" value="➕" onclick="subitemAdder(this)" title="Add a sub-item">
         </div>
         <div class="listTrash">
-        <input type="button" value="🗑️" onclick="itemDeleter(this)">
+        <input type="button" value="🗑️" onclick="itemDeleter(this)" title="Delete this item">
         </div>
         </div>`
-        // Find the correct insertion point by comparing timestamps.
-        // We want to insert the new item after the item with the closest earlier datetime.
-        let insertionPoint = null;
-        const items = listArea.getElementsByClassName("listItem")
-        var newTimestamp = new Date(list_date_raw).getTime()
-        if (items) {
-            for (let i = 0; i < items.length; i++) {
-                // Try to get the timestamp from the data attribute.
-                let existingTimestamp = items[i].dataset.timestamp
-                if (existingTimestamp) {
-                    existingTimestamp = Date(existingTimestamp).getTime()
-                } else {
-                    // If no data attribute is present, fall back to parsing the displayed date string.
-                    const dateStr = items[i].querySelector(".listDate .actualText").textContent
-                    existingTimestamp = new Date(dateStr).getTime()
-                }
-                // Update insertionPoint if this item occurred before the new item.
-                if (existingTimestamp <= newTimestamp) {
-                    insertionPoint = items[i]
-                }
+        insertItem(list_date_raw, string);
+    }
+}
+function insertItem(list_date_raw, string) {
+    //create variable listArea which holds a value of a place in the document
+    var listArea = document.getElementById("listArea")
+    // Find the correct insertion point by comparing timestamps.
+    // We want to insert the new item after the item with the closest earlier datetime.
+    let insertionPoint = null;
+    const items = listArea.getElementsByClassName("listItem")
+    var newTimestamp = new Date(list_date_raw).getTime()
+    if (items) {
+        for (let i = 0; i < items.length; i++) {
+            // Try to get the timestamp from the data attribute.
+            let existingTimestamp = items[i].dataset.timestamp
+            if (existingTimestamp) {
+                existingTimestamp = Date(existingTimestamp).getTime()
+            } else {
+                // If no data attribute is present, fall back to parsing the displayed date string.
+                const dateStr = items[i].querySelector(".listDate .actualText").textContent
+                existingTimestamp = new Date(dateStr).getTime()
+            }
+            // Update insertionPoint if this item occurred before the new item.
+            if (existingTimestamp <= newTimestamp) {
+                insertionPoint = items[i]
             }
         }
-
-        // Insert the new item:
-        //   - If an insertion point was found, insert after that item.
-        //   - Otherwise, insert at the beginning.
-        if (insertionPoint) {
-            insertionPoint.insertAdjacentHTML('afterend', string)
-        } else {
-            listArea.insertAdjacentHTML('afterbegin', string)
-        }
-        refreshLocalStorage()
     }
+    // Insert the new item:
+    //   - If an insertion point was found, insert after that item.
+    //   - Otherwise, insert at the beginning.
+    if (insertionPoint) {
+        insertionPoint.insertAdjacentHTML('afterend', string)
+    } else {
+        listArea.insertAdjacentHTML('afterbegin', string)
+    }
+    refreshLocalStorage()
 }
 //defines the variable as set to the value of the id listArea and sets it to empty string which completely clears all list items
 function itemRemoveAll(){
@@ -169,6 +177,24 @@ function toggleColor(clickedElement,bgColor=0,txtColor=0){
         const now = new Date()
         if (getInfo(twoUp).parsedDate > now) {
             notifyUser("Great work!", `You took care of "${getInfo(twoUp).title}" before it was due! Keep it up!`,"https://em-content.zobj.net/source/skype/289/partying-face_1f973.png");
+            if(getInfo(twoUp).reschedule) {
+                list_date_raw = getInfo(twoUp).parsedDate.setDate(getInfo(twoUp).parsedDate.getDate() + 1);
+                const date = new Date(list_date_raw);
+                const list_date = date.toLocaleString('en-US',{
+                weekday: 'short',   // Includes the abbreviated day of the week (e.g., Sun, Mon)
+                year: '2-digit',    // Ensures a two-digit year
+                month: '2-digit',   // Ensures a two-digit month
+                day: '2-digit',     // Ensures a two-digit day
+                hour: '2-digit',    // Ensures a two-digit hour
+                minute: '2-digit',  // Ensures a two-digit minute
+                hour12: true        // Ensures the time is in 12-hour format with AM/PM
+                });
+                string = twoUp.outerHTML;
+                string = string.replace(/ done/g,"").replace(/ checked="true"/g,"").replace(/<strong>.*?<\/strong>/, `<strong>${list_date}</strong>`);
+                console.log(string);
+                insertItem(list_date_raw,string);
+            }
+            setTimeout(() => autoDelete(twoUp),8640);
         }
     } else {
         twoUp.classList.remove("done")
@@ -181,13 +207,13 @@ function subitemAdder(clickedElement) {
     var string = `
     <div class="sublistItem">
     <div class="listCheckbox">
-    <input type="checkbox" onclick="toggleColor(this)">
+    <input type="checkbox" onclick="toggleColor(this)" title="Mark this sub-item complete">
     </div>
     <div class="listText">
-    <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()"></div>
+    <div class="actualText" spellcheck="false" contenteditable onfocusout="refreshLocalStorage()" title="Click to edit this sub-item"></div>
     </div>
     <div class="listTrash">
-    <input type="button" value="🗑️" onclick="itemDeleter(this)">
+    <input type="button" value="🗑️" onclick="itemDeleter(this)" title="Delete this sub-item">
     </div>
     </div>`;
     twoUp.innerHTML += string;
@@ -210,6 +236,7 @@ function getInfo(item) {
     }
     return {
         title: item.querySelector(".listText .actualText")?.innerText,
+        reschedule: item.querySelector(".listRepeat .switch input")?.checked,
         date: thisDate,
         parsedDate: parsedDate
     }
@@ -266,6 +293,18 @@ function checkAll() {
     editCounter(2);
     editCounter(3);
 };
+function autoDelete(item) {
+    exists = document.body.contains(item);
+    if (exists) {
+        itemTitle = getInfo(item).title
+        itemDate = getInfo(item).date
+        checkbox = item.querySelector(".listCheckbox input");
+        if (checkbox.checked && item.classList.contains("done")) {
+            item.remove();
+            refreshLocalStorage();
+        }
+    }
+}
 function presetDateTime() {
     var now = new Date()
     var yyyy = now.getFullYear()
