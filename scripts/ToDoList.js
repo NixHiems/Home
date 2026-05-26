@@ -115,6 +115,8 @@ function editURL() {
         thePlayer.setAttribute("src",theURL)
         URLlocation.value = ''
         localStorage.setItem("URL",theURL)
+    } else {
+        thePlayer.setAttribute("height","0")
     }
 }
 function openBesideHeader() {

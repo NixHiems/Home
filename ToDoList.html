@@ -2,216 +2,7 @@
 <html lang="en-US">
     <head>
         <meta name="viewport" content="width=device-width">
-        <style>
-            .pink {
-                border: 2px outset deeppink;
-                border-radius: 5px;
-            }
-            body {
-                background-image: url("assets/2560x1600.jpg");
-                background-size:cover;
-                background-position: center;
-                margin: 0;
-                padding: 0;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                min-width: 407px;
-            }
-            header {
-                flex: 0 0 auto;
-                margin: 5px;
-                display: flex;
-                gap: 5px;
-            }
-            h1 {
-                margin: 5px 0px;
-                width: 100%;
-            }
-            input {
-                padding: 0px 4px 1px 4px;
-                border-width: 2px;
-                border-radius: 5px;
-            }
-            #mainHeader {
-                flex: 1 1;
-            }
-            .level1 {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 5px;
-            }
-            .level2 {
-                flex: 1 1 auto;
-                display: flex;
-                gap: 5px;
-                flex-wrap: wrap;
-            }
-            .level2 * {
-                flex: 1 1 auto;
-            }
-            #editURL {
-                display: none;
-                flex: 1 1 100%;
-            }
-            #besideHeader {
-                flex: 0 1 auto;
-                display: flex;
-                gap: 5px;
-            }
-            #besideHeaderContent {
-                display: none;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 5px;
-            }
-            .counter {
-                flex: 1 1 auto;
-                background-color: #FFFFFF88;
-                border-radius: 5px;
-                padding: 5px;
-                display: flex;
-                flex-direction: column;
-            }
-            #counterTitle1,#counterTitle2,#counterTitle3 {
-                line-height: 1.1;
-            }
-            #counterDay1,#counterDay2,#counterDay3 {
-                font-size: 1.5em;
-                margin: 0px;
-                text-align: right;
-                line-height: 1.1;
-            }
-            .counterHHMM {
-                font-size: 0.75em;
-            }
-            section {
-                flex-grow: 1; /* Allow the content section to expand to fill remaining space */
-                overflow-y: auto;
-                margin: 5px;
-            }
-            .listItem {
-                padding: 10px;
-                margin: 5px 0px;
-                background-color: #FFFFFF88;
-                border-radius: 5px;
-                display: flex;
-                gap: 0px 5px; /* Spacing between elements */
-                flex-wrap: wrap;
-                align-items: baseline;
-                transition: all 0.3s ease;
-            }
-            .listToggle {
-                transition: all 0.3s ease;
-                width:max-content;
-            }
-            .listItem:not(:has(.sublistItem)) .listToggle{
-                opacity: 0.2;
-                z-index: -1;
-            }
-            .listItem.closed .listToggle{
-                transform: rotate(90deg);
-            }
-            .listText {
-                flex: 1 1; /* 1 1 fills the available space */
-            }
-            .actualText {
-                padding: 5px;
-                word-break: break-word;
-                font: 1em "Liberation Serif", serif;
-            }
-            .listDate {
-                flex: 0 0 auto;
-                text-align: right;
-            }
-            .listRepeat{
-            }
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 14px;
-                height: 24px;
-            }
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: .4s;
-                height: 100%;
-                border-radius: 3px;
-            }
-            .slider:before {
-                position: absolute;
-                content: "1";
-                height: 10px;
-                width: 8px;
-                left: 1px;
-                bottom: 1px;
-                background-color: white;
-                transition: .4s;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 9px;
-                line-height: 10px;
-                border-radius: 2px;
-                border: 2px outset;
-                color: black;
-            }
-            /*input:checked + .slider {
-                background-color: yellow;
-            }*/
-            input:checked + .slider:before {
-                content: "🗘";
-                transform: translateY(-8px);
-            }
-            .sublistItem {
-                padding: 10px;
-                margin: 4px 24px 4px 18px;
-                width: 100%;
-                background-color: #FFFFFF88;
-                border-radius: 5px;
-                display: flex;
-                gap: 5px; /* Spacing between elements */
-                align-items: baseline;
-                transition: all 0.3s ease;
-            }
-            .listItem.closed .sublistItem {
-                opacity: 0;
-                height: 0px;
-                margin: 0px 24px 0px 18px;
-                padding: 0px 10px;
-                z-index: -1;
-            }
-            iframe {
-                flex: 0 0 auto;
-                min-width: 325px;
-                margin: 5px
-            }
-            .overdue {
-                background-color: #F00;
-                color: white;
-            }
-            .listItem.done {
-                background-color: #0F88;
-                color: green;
-            }
-            .sublistItem.done {
-                background-color: #0000;
-                color: #0008;
-                padding: 0px 10px;
-                margin: 0px 24px 0px 18px;
-            }
-        </style>
+        <link href="styles/ToDoList.css" rel="stylesheet">
         <title>To Do: WIN!</title>
     </head>
     <body>
@@ -231,9 +22,9 @@
                         <!-- remove all button to be there event listener is onclick  -->
                         <input type="button" id="removeAll" value="🗑️ Remove All" onclick="itemRemoveAll()">
                         <input type="button" id="saveAll" value="💾 Save All" onclick="refreshLocalStorage()">
-                        <input type="button" id="openEditor" value="🎶 Edit" onclick="openEditor()">
+                        <input type="button" id="openEditor" value="🎶 Add/Edit" onclick="openEditor()">
                     </div>
-                    <input type="text" id="editURL" placeholder="Copy/paste the embed URL after 'src=' in the source, then click edit." onfocusout="editURL()">
+                    <input type="text" id="editURL" placeholder="Copy/paste the embed URL after 'src=' in the source, then click Add/Edit." onfocusout="editURL()">
                 </div>
             </div>
             <div id="besideHeader">
@@ -259,7 +50,7 @@
         </header>
         <!-- section for list items so that it is easier to handle  -->
         <section id="listArea"></section>
-        <iframe id="player" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWUZMtnnlvJ9p?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe id="player" src="about:blank" height="0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <script src="scripts/ToDoList.js"></script>
     </body>
 </html>
