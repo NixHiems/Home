@@ -13,6 +13,7 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 407px;
+    box-sizing: border-box;
 }
 header {
     flex: 0 0 auto;
@@ -68,7 +69,6 @@ input {
 .counter {
     flex: 1 1 auto;
     height: calc(100% - 14px);
-    background-color: #FFFFFF88;
     border-radius: 5px;
     padding: 5px;
     display: flex;
@@ -212,6 +212,60 @@ iframe {
     padding: 0px 10px;
     margin: 0px 24px 0px 18px;
 }
+#openSettings {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+    aspect-ratio: 1;
+    font-size: large;
+}
+#closeSettings {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    aspect-ratio: 1;
+    font-size: large;
+}
+#settingsOverlay {
+    display: none;
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    width: 98%;
+    height: 98%;
+    border: #888 solid;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 1%;
+}
+#backgroundImages {
+    display: flex;
+}
+#backgroundImages input {
+    display: none;
+}
+#backgroundImages label {
+    flex: auto;
+    border-radius: 5px;
+    border: #8888 solid;
+    margin: 5px;
+}
+#backgroundImages input:checked+label {
+    border: deeppink solid;
+}
+#backgroundImages img {
+    max-width: 100%;
+    height: 100%;
+}
+.shown {
+    display: block !important;
+}
+.transparent {
+    background-color: #FFF8;
+}
+.solid {
+    background-color: white;
+}
 @media (prefers-color-scheme: dark) {
     body {
         background: #222;
@@ -234,5 +288,15 @@ iframe {
     .sublistItem.done {
         background-color: #0000;
         color: #fff8;
+    }
+    input {
+        background-color: black;
+        color: white;
+    }
+    .transparent {
+        background-color: #0008;
+    }
+    .solid {
+        background-color: black;
     }
 }

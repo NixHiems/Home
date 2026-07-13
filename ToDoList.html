@@ -30,17 +30,17 @@
             <div id="besideHeader">
                 <input type="button" class="pink" value="<" onclick="openBesideHeader()">
                 <div id="besideHeaderContent">
-                    <div class="counter pink">
+                    <div class="counter pink transparent">
                         <div contenteditable id="counterTitle1" onfocusout="editCounter(1)">Days since</div>
                         <input type="date" id="counterDate1" onchange="editCounter(1)">
                         <p id="counterDay1">0 <span class="counterHHMM">00:00</span></p>
                     </div>
-                    <div class="counter pink">
+                    <div class="counter pink transparent">
                         <div contenteditable id="counterTitle2" onfocusout="editCounter(2)">Days since</div>
                         <input type="date" id="counterDate2" onchange="editCounter(2)">
                         <p id="counterDay2">0 <span class="counterHHMM">00:00</span></p>
                     </div>
-                    <div class="counter pink">
+                    <div class="counter pink transparent">
                         <div contenteditable id="counterTitle3" onfocusout="editCounter(3)">Days since</div>
                         <input type="date" id="counterDate3" onchange="editCounter(3)">
                         <p id="counterDay3">0 <span class="counterHHMM">00:00</span></p>
@@ -51,6 +51,21 @@
         <!-- section for list items so that it is easier to handle  -->
         <section id="listArea"></section>
         <iframe id="player" src="about:blank" height="0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <input type="button" id="openSettings" class="transparent" value="⚙️" onclick="toggleSettings()">
+        <div id="settingsOverlay" class="solid">
+            <h2>Settings</h2>
+            <hr>
+            <h3>Background Image</h3>
+            <div id="backgroundImages">
+                <input type="radio" id="backgroundNone" name="background" value="none">
+                <label for="backgroundNone"><img src=assets/no-texture.jpg></label>
+                <input type="radio" id="backgroundImg1" name="background" value="Img1">
+                <label for="backgroundImg1"><img src=assets/2560x1600.jpg></label>
+            </div>
+            <hr>
+            <input type="button" id="saveSettings" value="Save" onclick="saveSettings()">
+            <input type="button" id="closeSettings" class="transparent" value="❌" onclick="toggleSettings()">
+        </div>
         <script src="scripts/ToDoList.js"></script>
     </body>
 </html>

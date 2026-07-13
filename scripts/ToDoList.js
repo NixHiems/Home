@@ -313,12 +313,53 @@ function presetDateTime() {
     var dd = String(now.getDate()).padStart(2, '0')
     document.getElementById('listDate').value = `${yyyy}-${mm}-${dd}T23:59`
 }
+function addIfEnter(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+        addItemToList()
+    }
+}
+function toggleSettings() {
+    document.getElementById("settingsOverlay").classList.toggle("shown");
+}
+function saveSettings() {
+    const selected = document.querySelector('input[name="background"]:checked').value;
+
+    localStorage.setItem("background", selected);
+
+    // Read it back and apply it.
+    loadBackground();
+}
+function loadBackground() {
+    const background = localStorage.getItem("background") || "none";
+
+    const body = document.body;
+
+    if (background === "Img1") {
+        body.style.backgroundImage = 'url("assets/2560x1600.jpg")';
+        body.style.backgroundSize = "cover";
+        body.style.backgroundPosition = "center";
+        body.style.backgroundRepeat = "no-repeat";
+    } else {
+        body.style.backgroundImage = "";
+        body.style.backgroundSize = "";
+        body.style.backgroundPosition = "";
+        body.style.backgroundRepeat = "";
+    }
+
+    // Keep the radio buttons synchronized.
+    const radio = document.querySelector(
+        `input[name="background"][value="${background}"]`
+    );
+    if (radio) radio.checked = true;
+}
 window.onload = function() {
     if (localStorage.getItem("mystuff")) {
         var string = localStorage.getItem("mystuff")
         var listArea = document.getElementById("listArea")
         listArea.innerHTML += string
     }
+    loadBackground();
     for (let i = 1; i <= 3; i++) {
         const counterData = localStorage.getItem(`counter${i}`);
         if (counterData) {
@@ -336,12 +377,6 @@ window.onload = function() {
     presetDateTime()
     Notification.requestPermission()
     setInterval(checkAll, 10000);
-}
-function addIfEnter(event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-        addItemToList()
-    }
 }
 document.getElementById("listInput").addEventListener("keypress", function(event) {
     addIfEnter(event)
