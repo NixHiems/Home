@@ -334,12 +334,16 @@ function loadBackground() {
     const background = localStorage.getItem("background") || "none";
 
     const body = document.body;
-
+    body.style.backgroundSize = "cover";
+    body.style.backgroundPosition = "center";
+    body.style.backgroundRepeat = "no-repeat";
     if (background === "Img1") {
         body.style.backgroundImage = 'url("assets/2560x1600.jpg")';
-        body.style.backgroundSize = "cover";
-        body.style.backgroundPosition = "center";
-        body.style.backgroundRepeat = "no-repeat";
+    } else if (background === "Img2") {
+        body.style.backgroundImage = 'url("assets/Ranger.jpg")';
+    } else if (background === "Img3") {
+        body.style.backgroundImage = 'url("assets/Maverick.jpg")';
+        
     } else {
         body.style.backgroundImage = "";
         body.style.backgroundSize = "";

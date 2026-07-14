@@ -245,7 +245,7 @@ iframe {
     display: none;
 }
 #backgroundImages label {
-    flex: auto;
+    flex: 1 1 100px;
     border-radius: 5px;
     border: #8888 solid;
     margin: 5px;
