@@ -142,8 +142,6 @@ function editCounter(counterId) {
     }
 
     const selectedDate = new Date(dateInput.value);
-    selectedDate.setTime(selectedDate.getTime() + 14400000); // Offset for time correction
-
     const today = new Date();
     const timeDiff = today - selectedDate;
 
