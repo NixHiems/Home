@@ -17,7 +17,7 @@ function addItemToList() {
     //reset list_input and datetime
     list_input.value = ''
     list_input.focus()
-    presetDateTime()
+    //presetDateTime()
     //if the user did not submit an empty string do the following:
     if (list_item != '') {
         //define list item as having a checkbox that can be toggled on the left with the item and a removal button toggleGreen and itemDeleter both take this as an argument so that the functions know which element is calling it and so that we can get the parent element div to manipulate
